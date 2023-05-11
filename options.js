@@ -29,6 +29,8 @@ function saveOptions(event) {
     browser.storage.local.set({
         url: document.querySelector("#url").value,
         method: document.querySelector("#method").value,
+        username: document.querySelector("#username").value,
+        password: document.querySelector("#password").value,
         propertyMapping: properties
     });
 
@@ -39,6 +41,8 @@ function loadOptions() {
     browser.storage.local.get().then((result) => {
         document.querySelector("#url").value = result.url || defaultOptions.url;
         document.querySelector("#method").value = result.method || defaultOptions.method;
+        document.querySelector("#username").value = result.username || defaultOptions.username;
+        document.querySelector("#password").value = result.password || defaultOptions.password;
 
         propertyMappingText = [];
 

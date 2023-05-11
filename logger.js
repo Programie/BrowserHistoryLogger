@@ -16,6 +16,11 @@ browser.history.onVisited.addListener((historyItem) => {
         return;
     }
 
+    let auth = {
+        username: options.username || defaultOptions.username,
+        password: options.password || defaultOptions.password
+    };
+
     let propertyMapping = options.propertyMapping || defaultOptions.propertyMapping;
 
     jsonData = {};
@@ -30,12 +35,18 @@ browser.history.onVisited.addListener((historyItem) => {
         _.set(jsonData, propertyPath, value);
     });
 
+    let headers = {
+        "Content-Type": "application/json"
+    };
+
+    if (auth.username && auth.password) {
+        headers["Authorization"] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
+    }
+
     fetch(options.url, {
         mode: "no-cors",
         method: options.method || "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: headers,
         body: JSON.stringify(jsonData)
     });
 });
