@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="bootstrap.min.css" />
+  </head>
+
+  <body class="p-3">
+    <form>
+      <div class="form-group mb-3">
+        <div class="form-floating">
+          <input class="form-control" type="url" id="url" name="url" />
+          <label for="url">URL</label>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="form-floating">
+          <select class="form-control" id="method" name="method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+          </select>
+          <label for="method">Method</label>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="row">
+          <div class="col">
+            <div class="form-floating">
+              <input class="form-control" type="text" id="username" name="username" placeholder="Username" />
+              <label for="username">Username</label>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-floating">
+              <input class="form-control" type="password" id="password" name="password" placeholder="Password" />
+              <label for="password">Password</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="form-floating">
+          <textarea class="form-control" id="property-mapping" name="property-mapping" style="height: 100px;" placeholder="Property Mapping"></textarea>
+          <label for="property-mapping">Property Mapping</label>
+        </div>
+        <div class="form-text">
+          List each property which should be included in the JSON payload.<br />
+          Each line defines one property in the format of <kbd>key: value</kbd> where "key" is the dotted path in the resulting JSON and "value" is the value you want to include in the property.
+        </div>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+
+    <script src="common.js"></script>
+    <script src="options.js"></script>
+  </body>
+
+</html>

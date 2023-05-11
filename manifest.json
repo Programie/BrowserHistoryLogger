@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "Browser History Logger",
+    "description": "Log each opened website to a user specified HTTP endpoint",
+    "version": "1.0.0",
+    "permissions": [
+        "history",
+        "storage"
+    ],
+    "background": {
+        "scripts": [
+            "lodash.min.js",
+            "common.js",
+            "logger.js"
+        ]
+    },
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": false,
+        "chrome_style": false
+    },
+    "applications": {
+        "gecko": {
+            "id": "BrowserHistoryLogger@Programie",
+            "strict_min_version": "100.0"
+        }
+    }
+}
