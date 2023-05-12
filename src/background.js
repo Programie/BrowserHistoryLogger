@@ -1,3 +1,4 @@
+import axios from "axios";
 import _ from "lodash";
 import {getDefaultOptions} from "./common";
 
@@ -46,10 +47,10 @@ browser.history.onVisited.addListener((historyItem) => {
         headers["Authorization"] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
     }
 
-    fetch(options.url, {
-        mode: "no-cors",
+    axios({
+        url: options.url,
         method: options.method || "POST",
         headers: headers,
-        body: JSON.stringify(jsonData)
+        data: jsonData
     });
 });
