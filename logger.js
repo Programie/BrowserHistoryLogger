@@ -23,7 +23,7 @@ browser.history.onVisited.addListener((historyItem) => {
 
     let propertyMapping = options.propertyMapping || defaultOptions.propertyMapping;
 
-    jsonData = {};
+    let jsonData = {};
 
     Object.entries(propertyMapping).forEach(([propertyPath, value]) => {
         if (value.startsWith("historyItem.")) {
