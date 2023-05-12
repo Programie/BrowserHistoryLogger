@@ -1,3 +1,7 @@
+import "bootstrap/dist/css/bootstrap.css";
+
+import {getDefaultOptions} from "./common";
+
 let defaultOptions = getDefaultOptions();
 
 function saveOptions(event) {
@@ -44,7 +48,7 @@ function loadOptions() {
         document.querySelector("#username").value = result.username || defaultOptions.username;
         document.querySelector("#password").value = result.password || defaultOptions.password;
 
-        propertyMappingText = [];
+        let propertyMappingText = [];
 
         Object.entries(result.propertyMapping || defaultOptions.propertyMapping).forEach(([key, value]) => {
             propertyMappingText.push(`${key}: ${value}`);

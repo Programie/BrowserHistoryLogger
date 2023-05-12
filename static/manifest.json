@@ -9,9 +9,7 @@
     ],
     "background": {
         "scripts": [
-            "lodash.min.js",
-            "common.js",
-            "logger.js"
+            "background.js"
         ]
     },
     "options_ui": {

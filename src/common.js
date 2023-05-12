@@ -1,4 +1,4 @@
-function getDefaultOptions() {
+export function getDefaultOptions() {
     return {
         url: "",
         method: "POST",

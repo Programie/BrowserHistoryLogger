@@ -1,3 +1,6 @@
+import _ from "lodash";
+import {getDefaultOptions} from "./common";
+
 let options = {};
 let defaultOptions = getDefaultOptions();
 
