@@ -1,0 +1,26 @@
+{
+  "name": "browserhistorylogger",
+  "version": "1.0.0",
+  "description": "Log each opened website to a user specified HTTP endpoint",
+  "author": {
+    "name": "Michael Wieland",
+    "email": "dev@selfcoders.com"
+  },
+  "license": "MIT",
+  "homepage": "https://gitlab.com/Programie/BrowserHistoryLogger#readme",
+  "bugs": {
+    "url": "https://gitlab.com/Programie/BrowserHistoryLogger"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Programie/BrowserHistoryLogger.git"
+  },
+  "devDependencies": {
+    "@types/firefox-webext-browser": "^111.0.1",
+    "web-ext": "^7.6.2"
+  },
+  "scripts": {
+    "build": "web-ext build",
+    "start": "web-ext run"
+  }
+}
