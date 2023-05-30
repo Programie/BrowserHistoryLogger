@@ -8,3 +8,6 @@ build:
   script:
     - npm ci
     - npm run build
+  artifacts:
+    paths:
+      - web-ext-artifacts/*.zip
