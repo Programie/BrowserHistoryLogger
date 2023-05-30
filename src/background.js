@@ -11,6 +11,16 @@ function loadOptions() {
     });
 }
 
+function getReplacementValue(value, historyItem) {
+    if (value.startsWith("historyItem.")) {
+        value = historyItem[value.split(".")[1]];
+    } else if (value === "now.timestamp") {
+        value = new Date().getTime();
+    }
+
+    return value;
+}
+
 loadOptions();
 browser.storage.local.onChanged.addListener(loadOptions);
 
@@ -30,13 +40,7 @@ browser.history.onVisited.addListener((historyItem) => {
     let jsonData = {};
 
     Object.entries(propertyMapping).forEach(([propertyPath, value]) => {
-        if (value.startsWith("historyItem.")) {
-            value = historyItem[value.split(".")[1]];
-        } else if (value === "now.timestamp") {
-            value = new Date().getTime();
-        }
-
-        _.set(jsonData, propertyPath, value);
+        _.set(jsonData, propertyPath, getReplacementValue(value, historyItem));
     });
 
     let headers = {
@@ -47,8 +51,12 @@ browser.history.onVisited.addListener((historyItem) => {
         headers["Authorization"] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
     }
 
+    let url = options.url.replace(/%[^%]+%/g, (key) => {
+        return encodeURIComponent(getReplacementValue(key.replace(/%/g, ""), historyItem));
+    });
+
     axios({
-        url: options.url,
+        url: url,
         method: options.method || "POST",
         headers: headers,
         data: jsonData
