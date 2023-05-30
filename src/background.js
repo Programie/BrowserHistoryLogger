@@ -33,7 +33,15 @@ function sendRequest(request) {
     return axios(Object.assign({}, {
         method: options.method || "POST",
         headers: headers
-    }, request)).catch(() => {
+    }, request)).then(() => {
+        browser.browserAction.setBadgeBackgroundColor({"color": "green"});
+        browser.browserAction.setBadgeText({text: queuedRequests.length.toString()});
+        browser.browserAction.setTitle({title: "Last request was successful"});
+    }).catch((error) => {
+        browser.browserAction.setBadgeBackgroundColor({"color": "red"});
+        browser.browserAction.setBadgeText({text: queuedRequests.length.toString()});
+        browser.browserAction.setTitle({title: `Last request failed: ${error.message}`});
+
         if (options.retryOnError) {
             queuedRequests.push(request);
         }
@@ -58,6 +66,9 @@ browser.storage.local.onChanged.addListener(loadOptions);
 browser.history.onVisited.addListener((historyItem) => {
     if (!options.url) {
         console.error("No target URL defined!");
+        browser.browserAction.setBadgeBackgroundColor({"color": "red"});
+        browser.browserAction.setBadgeText({text: "!!!"});
+        browser.browserAction.setTitle({title: "No target URL defined!"});
         return;
     }
 

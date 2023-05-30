@@ -12,6 +12,11 @@
             "background.js"
         ]
     },
+    "browser_action": {
+        "browser_style": false,
+        "default_title": "",
+        "default_popup": "options.html"
+    },
     "options_ui": {
         "page": "options.html",
         "browser_style": false,
