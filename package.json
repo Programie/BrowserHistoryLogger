@@ -1,6 +1,6 @@
 {
   "name": "browserhistorylogger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Log each opened website to a user specified HTTP endpoint",
   "author": {
     "name": "Michael Wieland",
