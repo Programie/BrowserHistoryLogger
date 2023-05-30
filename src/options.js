@@ -1,8 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 
-import {getDefaultOptions} from "./common";
-
-let defaultOptions = getDefaultOptions();
+import {loadConfig} from "./common";
 
 function saveOptions(event) {
     let propertyMappingText = document.querySelector("#property-mapping").value;
@@ -35,6 +33,7 @@ function saveOptions(event) {
         method: document.querySelector("#method").value,
         username: document.querySelector("#username").value,
         password: document.querySelector("#password").value,
+        retryOnError: document.querySelector("#retry-on-error").checked,
         propertyMapping: properties
     });
 
@@ -42,15 +41,15 @@ function saveOptions(event) {
 }
 
 function loadOptions() {
-    browser.storage.local.get().then((result) => {
-        document.querySelector("#url").value = result.url || defaultOptions.url;
-        document.querySelector("#method").value = result.method || defaultOptions.method;
-        document.querySelector("#username").value = result.username || defaultOptions.username;
-        document.querySelector("#password").value = result.password || defaultOptions.password;
+    loadConfig((result) => {
+        document.querySelector("#url").value = result.url;
+        document.querySelector("#method").value = result.method;
+        document.querySelector("#username").value = result.username;
+        document.querySelector("#password").value = result.password;
 
         let propertyMappingText = [];
 
-        Object.entries(result.propertyMapping || defaultOptions.propertyMapping).forEach(([key, value]) => {
+        Object.entries(result.propertyMapping).forEach(([key, value]) => {
             propertyMappingText.push(`${key}: ${value}`);
         });
 

@@ -9,3 +9,11 @@ export function getDefaultOptions() {
         }
     };
 }
+
+export function loadConfig(callback) {
+    browser.storage.local.get().then((result) => {
+        result = Object.assign({}, getDefaultOptions(), result);
+
+        callback(result);
+    });
+}

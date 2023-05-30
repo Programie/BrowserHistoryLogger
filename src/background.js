@@ -1,12 +1,11 @@
 import axios from "axios";
 import _ from "lodash";
-import {getDefaultOptions} from "./common";
+import {loadConfig} from "./common";
 
 let options = {};
-let defaultOptions = getDefaultOptions();
 
 function loadOptions() {
-    browser.storage.local.get().then((result) => {
+    loadConfig((result) => {
         options = result;
     });
 }
@@ -31,15 +30,13 @@ browser.history.onVisited.addListener((historyItem) => {
     }
 
     let auth = {
-        username: options.username || defaultOptions.username,
-        password: options.password || defaultOptions.password
+        username: options.username,
+        password: options.password
     };
-
-    let propertyMapping = options.propertyMapping || defaultOptions.propertyMapping;
 
     let jsonData = {};
 
-    Object.entries(propertyMapping).forEach(([propertyPath, value]) => {
+    Object.entries(options.propertyMapping).forEach(([propertyPath, value]) => {
         _.set(jsonData, propertyPath, getReplacementValue(value, historyItem));
     });
 
