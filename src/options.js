@@ -46,6 +46,7 @@ function loadOptions() {
         document.querySelector("#method").value = result.method;
         document.querySelector("#username").value = result.username;
         document.querySelector("#password").value = result.password;
+        document.querySelector("#retry-on-error").checked = result.retryOnError;
 
         let propertyMappingText = [];
 

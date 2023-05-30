@@ -3,6 +3,7 @@ import _ from "lodash";
 import {loadConfig} from "./common";
 
 let options = {};
+let queuedRequests = [];
 
 function loadOptions() {
     loadConfig((result) => {
@@ -20,6 +21,37 @@ function getReplacementValue(value, historyItem) {
     return value;
 }
 
+function sendRequest(request) {
+    let headers = {
+        "Content-Type": "application/json"
+    };
+
+    if (options.username && options.password) {
+        headers["Authorization"] = `Basic ${btoa(`${options.username}:${options.password}`)}`;
+    }
+
+    return axios(Object.assign({}, {
+        method: options.method || "POST",
+        headers: headers
+    }, request)).catch(() => {
+        if (options.retryOnError) {
+            queuedRequests.push(request);
+        }
+    });
+}
+
+function resendQueuedRequests() {
+    if (!options.retryOnError) {
+        return;
+    }
+
+    let requests = queuedRequests.splice(0, 5);
+
+    requests.forEach((request) => {
+        sendRequest(request);
+    });
+}
+
 loadOptions();
 browser.storage.local.onChanged.addListener(loadOptions);
 
@@ -29,33 +61,22 @@ browser.history.onVisited.addListener((historyItem) => {
         return;
     }
 
-    let auth = {
-        username: options.username,
-        password: options.password
-    };
-
     let jsonData = {};
 
     Object.entries(options.propertyMapping).forEach(([propertyPath, value]) => {
         _.set(jsonData, propertyPath, getReplacementValue(value, historyItem));
     });
 
-    let headers = {
-        "Content-Type": "application/json"
-    };
-
-    if (auth.username && auth.password) {
-        headers["Authorization"] = `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
-    }
-
     let url = options.url.replace(/%[^%]+%/g, (key) => {
         return encodeURIComponent(getReplacementValue(key.replace(/%/g, ""), historyItem));
     });
 
-    axios({
+    let request = {
         url: url,
-        method: options.method || "POST",
-        headers: headers,
         data: jsonData
-    });
+    };
+
+    sendRequest(request);
 });
+
+window.setInterval(resendQueuedRequests, 10000);

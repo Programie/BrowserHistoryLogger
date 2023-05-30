@@ -6,7 +6,8 @@ export function getDefaultOptions() {
         password: "",
         propertyMapping: {
             url: "historyItem.url"
-        }
+        },
+        retryOnError: false
     };
 }
 

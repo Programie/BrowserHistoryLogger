@@ -56,6 +56,14 @@
         </div>
       </div>
 
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="retry-on-error" name="retry-on-error"/>
+      <label for="retry-on-error">Retry on error</label>
+    </div>
+    <div class="form-text">
+      Check to queue the request for sending later in case a server error occurred. Only requests resulting in an error 5xx or without any server response (i.e. network error) are retried.
+    </div>
+
       <button class="btn btn-primary" type="submit">Save</button>
     </form>
 
