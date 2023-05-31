@@ -2,10 +2,11 @@
     "manifest_version": 2,
     "name": "Browser History Logger",
     "description": "Log each opened website to a user specified HTTP endpoint",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "permissions": [
         "history",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "background": {
         "scripts": [
