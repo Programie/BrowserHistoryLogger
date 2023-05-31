@@ -5,7 +5,7 @@ export function getDefaultOptions() {
         username: "",
         password: "",
         propertyMapping: {
-            url: "historyItem.url"
+            url: "tab.url"
         },
         retryOnError: false
     };

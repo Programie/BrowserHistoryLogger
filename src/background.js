@@ -11,9 +11,11 @@ function loadOptions() {
     });
 }
 
-function getReplacementValue(value, historyItem) {
-    if (value.startsWith("historyItem.")) {
-        value = historyItem[value.split(".")[1]];
+function getReplacementValue(value, data) {
+    if (value.startsWith("historyItem.") && data.hasOwnProperty("historyItem")) {
+        value = data.historyItem[value.split(".")[1]];
+    } else if (value.startsWith("tab.") && data.hasOwnProperty("tab")) {
+        value = data.tab[value.split(".")[1]];
     } else if (value === "now.timestamp") {
         value = new Date().getTime();
     }
@@ -60,10 +62,55 @@ function resendQueuedRequests() {
     });
 }
 
+function sendTabData(tab) {
+    let usesHistoryItem = Object.values(options.propertyMapping).find(value => value.startsWith("historyItem.")) !== undefined;
+
+    new Promise((resolve, reject) => {
+        if (options.url.includes("%historyItem.") || usesHistoryItem) {
+            browser.history.search({text: tab.url}).then((historyItems) => {
+                resolve({
+                    historyItem: historyItems.find(item => item.url === tab.url)
+                });
+            });
+        } else {
+            resolve({});
+        }
+    }).then((inputData) => {
+        inputData = Object.assign({
+            tab: tab
+        }, inputData);
+
+        let jsonData = {};
+
+        Object.entries(options.propertyMapping).forEach(([propertyPath, value]) => {
+            _.set(jsonData, propertyPath, getReplacementValue(value, inputData));
+        });
+
+        let url = options.url.replace(/%[^%]+%/g, (key) => {
+            return encodeURIComponent(getReplacementValue(key.replace(/%/g, ""), inputData));
+        });
+
+        let request = {
+            url: url,
+            data: jsonData
+        };
+
+        sendRequest(request);
+    });
+}
+
 loadOptions();
 browser.storage.local.onChanged.addListener(loadOptions);
 
-browser.history.onVisited.addListener((historyItem) => {
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status !== "complete") {
+        return;
+    }
+
+    if (tab.url.startsWith("about:") || tab.url.startsWith("chrome://")) {
+        return;
+    }
+
     if (!options.url) {
         console.error("No target URL defined!");
         browser.browserAction.setBadgeBackgroundColor({"color": "red"});
@@ -72,22 +119,7 @@ browser.history.onVisited.addListener((historyItem) => {
         return;
     }
 
-    let jsonData = {};
-
-    Object.entries(options.propertyMapping).forEach(([propertyPath, value]) => {
-        _.set(jsonData, propertyPath, getReplacementValue(value, historyItem));
-    });
-
-    let url = options.url.replace(/%[^%]+%/g, (key) => {
-        return encodeURIComponent(getReplacementValue(key.replace(/%/g, ""), historyItem));
-    });
-
-    let request = {
-        url: url,
-        data: jsonData
-    };
-
-    sendRequest(request);
+    sendTabData(tab);
 });
 
 window.setInterval(resendQueuedRequests, 10000);
