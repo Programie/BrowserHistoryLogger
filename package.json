@@ -7,13 +7,13 @@
     "email": "dev@selfcoders.com"
   },
   "license": "MIT",
-  "homepage": "https://gitlab.com/Programie/BrowserHistoryLogger#readme",
+  "homepage": "https://github.com/Programie/BrowserHistoryLogger#readme",
   "bugs": {
-    "url": "https://gitlab.com/Programie/BrowserHistoryLogger"
+    "url": "https://github.com/Programie/BrowserHistoryLogger/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/Programie/BrowserHistoryLogger.git"
+    "url": "git+ssh://git@github.com/Programie/BrowserHistoryLogger.git"
   },
   "dependencies": {
     "axios": "^1.4.0",

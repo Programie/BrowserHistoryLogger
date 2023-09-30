@@ -1,0 +1,11 @@
+name: Build package
+
+on: push
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: programie/Workflows/.github/workflows/build-web-extension.yml@main
+    secrets: inherit
