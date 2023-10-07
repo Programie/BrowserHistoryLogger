@@ -37,6 +37,7 @@
   "webExt": {
     "sourceDir": "dist/",
     "build": {
+      "filename": "{name}-{version}.xpi",
       "overwriteDest": true
     }
   },
